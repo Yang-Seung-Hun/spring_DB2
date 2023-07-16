@@ -21,6 +21,12 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	//Jdbc Template 추가
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	//MySQL 데이터베이스 추가 (강의는 H2 사용)
+	implementation 'mysql:mysql-connector-java'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
