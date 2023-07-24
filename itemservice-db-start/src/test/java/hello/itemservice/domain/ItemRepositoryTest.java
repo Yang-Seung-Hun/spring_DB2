@@ -11,12 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
+/**
+ * 스프링이 제공하는 @Transactional 애노테이션은 로직이 성공적으로 수행되면 커밋하도록 동작함
+ * 하지만 테스트에서 사용하면 아주 특별하게 동작함 -> 테스트를 트랜잭션 안에서 실행하고, 테스트가 끝나면 트랜잭션을 자동으로 롤백시킴
+ *
+ * cf. 가끔 데이터베이스에 데이터가 잘 보관되었는지 최종 결과를 눈으로 확인하고 싶을 경우가 있음
+ *     이 경우, @Commit 을 클래스 또는 메서드에 붙이면 테스트 종료후 롤백 대신 커밋이 호출됨 (@Rollback(value=false) 도 같은 기능)
+ */
 @SpringBootTest
 /**
  * @SpringBootTest 는 @SpringBootApplication 을 찾아서 설정으로 사용함
@@ -27,23 +36,23 @@ class ItemRepositoryTest {
     @Autowired
     ItemRepository itemRepository;
 
-    /**
-     * 트랜잭션 관리자 주입
-     * 스프링 부트는 적절한 트랜잭션 매니저 빈을 스프링 빈으로 등록해줌
-     */
-    @Autowired
-    PlatformTransactionManager transactionManager;
-
-    TransactionStatus status;
-
-    /**
-     * 갹각의 테스트 케이스를 실행하기 직전에 호출되기 때문에 여기서 트랜잭션을 시작하면 됨
-     */
-    @BeforeEach
-    void beforeEach(){
-        //트랜잭션 시작
-        status = transactionManager.getTransaction(new DefaultTransactionDefinition());
-    }
+//    /**
+//     * 트랜잭션 관리자 주입
+//     * 스프링 부트는 적절한 트랜잭션 매니저 빈을 스프링 빈으로 등록해줌
+//     */
+//    @Autowired
+//    PlatformTransactionManager transactionManager;
+//
+//    TransactionStatus status;
+//
+//    /**
+//     * 갹각의 테스트 케이스를 실행하기 직전에 호출되기 때문에 여기서 트랜잭션을 시작하면 됨
+//     */
+//    @BeforeEach
+//    void beforeEach(){
+//        //트랜잭션 시작
+//        status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+//    }
 
     /**
      * 각각의 테스트 케이스가 완료된 직후에 호출되기 때문에 여기서 트랜잭션을 롤백하면 됨
@@ -55,7 +64,7 @@ class ItemRepositoryTest {
             ((MemoryItemRepository) itemRepository).clearStore();
         }
         //트랜잭션 롤백
-        transactionManager.rollback(status);
+        //transactionManager.rollback(status);
     }
 
     @Test
