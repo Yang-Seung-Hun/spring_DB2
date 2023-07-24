@@ -27,6 +27,9 @@ dependencies {
 	//MySQL 데이터베이스 추가 (강의는 H2 사용)
 	implementation 'mysql:mysql-connector-java'
 
+	//스프링 부트 기본 임베디드 디비는 h2 기반이라 추가해야함
+	implementation "com.h2database:h2"
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
