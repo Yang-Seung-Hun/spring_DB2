@@ -24,6 +24,8 @@ dependencies {
 
 	//Jdbc Template 추가
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	// MyBatis 추가
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
 	//MySQL 데이터베이스 추가 (강의는 H2 사용)
 	implementation 'mysql:mysql-connector-java'
 
